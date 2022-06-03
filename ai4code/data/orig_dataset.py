@@ -22,7 +22,6 @@ def split_csv_row(row:list)->dict:
     d = {row[0]:r}                                                            
     return d                                                                    
 
-
 def load_csv(file_path:str)->dict:                                              
     '''                                                                         
     Load csv file with ID, order ...                                            
@@ -34,6 +33,8 @@ def load_csv(file_path:str)->dict:
     data.pop(0)
 
     results = dict((key, val) for k in list(map(split_csv_row, data)) for key, val in k.items())
+    
+    #map_results = list(map(split_csv_row, data))} 
     return results 
 
 
@@ -42,7 +43,6 @@ def get_json(dir_path:str)->list:
     files = glob.glob( join(dir_path,'**/*.json'), recursive=True ) 
     file_dict = { f.split('/')[-1].split('.')[0]:f for f in files }
     return file_dict
-
 
 def load_json(file_path:str, only_code=True):
     '''
@@ -81,8 +81,11 @@ def convert_json(ID, json_file, orders, tform)->dict:
 
     # Generate Embeddings (this might be faster to batch lists)
     embeddings = tform.embedding( to_process )
+    
+    # Turn Embeddings back into dick with number values
+    #embedding_dict[n] = { (i,emb) for i,emb in enumerate(embeddings) }
+    #return ID, embedding_dict 
     return ID, embeddings 
-
 
 def load(data_dir:str):
     '''
@@ -94,6 +97,11 @@ def load(data_dir:str):
     json_files = get_json( join(data_dir, json_dir) )
     tform = transformer()
 
+    '''
+    jfile = '/home/squirt/Documents/AI4Code/train/6323080c5d2b46.json'
+    json_file = convert_json(jfile, id_order, tform)
+    print(json_file)
+    '''
     dataset = {}
     for file_id, file_name in json_files.items():
         k,v = convert_json(file_id, file_name,id_order,tform)
@@ -102,4 +110,5 @@ def load(data_dir:str):
     # Save Results (apperently compute take some time)
     with open( join(data_dir,'embeddings.pkl'), 'wb') as handle:
         pickle.dump(dataset, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
     return
