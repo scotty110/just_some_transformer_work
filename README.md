@@ -1,1 +1,2 @@
-#Yolov5 Serve
+# For a Kaggle Comp
+Alpha code
