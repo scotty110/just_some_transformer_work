@@ -13,13 +13,6 @@ class consecutive_cells(Dataset):
     '''
     This dataset is going to be slightly different in it will generate "new"
     data after each epoch. 
-
-    TODO:
-        - Making training data list is taking way to long. 
-            Add multi processing to ease burden,
-            Use Queue to store data, 
-            Shuffle items before processing (to add randomness)
-            Just pull head instead of index. 
     '''
     def __init__( self,
                     file:str,
